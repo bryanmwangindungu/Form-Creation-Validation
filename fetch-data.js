@@ -1,43 +1,36 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("registration-form");
-    const feedbackDiv = document.getElementById("form-feedback");
+// Define the async function to fetch and display user data
+async function fetchUserData() {
+    // Define the API URL
+    const apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
-    function validateForm(event) {
-        event.preventDefault();
+    // Select the data container element
+    const dataContainer = document.getElementById('api-data');
 
-        const username = document.getElementById("username").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
+    try {
+        // Fetch data from the API
+        const response = await fetch(apiUrl);
+        const users = await response.json();
 
-        let isValid = true;
-        const messages = [];
+        // Clear the loading message
+        dataContainer.innerHTML = '';
 
-        if (username.length < 3) {
-            isValid = false;
-            messages.push("Username must be at least 3 characters long.");
-        }
+        // Create and append user list
+        const userList = document.createElement('ul');
 
-        if (!email.includes("@") || !email.includes(".")) {
-            isValid = false;
-            messages.push("Please enter a valid email address.");
-        }
+        users.forEach(user => {
+            const listItem = document.createElement('li');
+            listItem.textContent = user.name;
+            userList.appendChild(listItem);
+        });
 
-        if (password.length < 8) {
-            isValid = false;
-            messages.push("Password must be at least 8 characters long.");
-        }
+        dataContainer.appendChild(userList);
 
-        feedbackDiv.style.display = "block";
-        if (isValid) {
-            feedbackDiv.textContent = "Registration successful!";
-            feedbackDiv.style.color = "#28a745";
-            feedbackDiv.style.backgroundColor = "#d4edda";
-        } else {
-            feedbackDiv.innerHTML = messages.join("<br>");
-            feedbackDiv.style.color = "#dc3545";  // fixed here
-            feedbackDiv.style.backgroundColor = "#ffbaba";
-        }
+    } catch (error) {
+        // Error handling
+        dataContainer.innerHTML = 'Failed to load user data.';
+        console.error('Error fetching data:', error);
     }
+}
 
-    form.addEventListener("submit", validateForm);
-});
+// Invoke fetchUserData on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', fetchUserData);
