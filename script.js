@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("registration-form");
     const feedbackDiv = document.getElementById("form-feedback");
 
-    // Named function for validating form inputs
     function validateForm(event) {
         event.preventDefault();
 
@@ -35,11 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
             feedbackDiv.style.backgroundColor = "#d4edda";
         } else {
             feedbackDiv.innerHTML = messages.join("<br>");
-            feedbackDiv.style.color = "#d8000c";
+            feedbackDiv.style.color = "#dc3545";  // fixed here
             feedbackDiv.style.backgroundColor = "#ffbaba";
         }
     }
 
-    // Attach event listener using the named function
     form.addEventListener("submit", validateForm);
 });
